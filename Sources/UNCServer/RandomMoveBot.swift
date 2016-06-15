@@ -18,23 +18,18 @@
 //
 
 #if os(Linux)
-	
 import SwiftGlibc
-
 func randomInt(max: Int) -> Int {
 	return Int(random() % (max + 1))
 }
-	
 #else
-	
 import Darwin
-import UNCShared
-
 func randomInt(max: Int) -> Int {
 	return Int(arc4random_uniform(UInt32(max)))
 }
-	
 #endif
+
+import UNCShared
 
 struct RandomMoveBot {
 	
