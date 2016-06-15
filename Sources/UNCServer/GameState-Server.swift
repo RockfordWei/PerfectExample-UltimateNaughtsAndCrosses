@@ -22,7 +22,7 @@ struct GameStateServer: GameState {
 			defer {
 				sqlite.close()
 			}
-			// not sure what all to put in here yet
+			// create the sql tables IF THEY DO NOT EXIST
 			try sqlite.execute(statement: "CREATE TABLE IF NOT EXISTS players (" +
 				"id INTEGER PRIMARY KEY, nick TEXT)")
 			try sqlite.execute(statement: "CREATE UNIQUE INDEX IF NOT EXISTS playersidx ON players (" +
@@ -52,6 +52,7 @@ struct GameStateServer: GameState {
 		File(forExampleGameDBPath).delete()
 	}
 	
+    // If we can't create the database it is indeed a fatal error
 	private var db: SQLite {
 		return try! SQLite(forExampleGameDBPath)
 	}
@@ -670,7 +671,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM slots WHERE id_board = \(boardId) AND owner = \(type.rawValue) " +
 			"AND ((x = 0 AND y = 1)" +
 			"OR (x = 1 AND y = 1)" +
-		"OR (x = 2 AND y = 1))"
+            "OR (x = 2 AND y = 1))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -684,7 +685,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM slots WHERE id_board = \(boardId) AND owner = \(type.rawValue) " +
 			"AND ((x = 0 AND y = 2)" +
 			"OR (x = 1 AND y = 2)" +
-		"OR (x = 2 AND y = 2))"
+            "OR (x = 2 AND y = 2))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -698,7 +699,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM slots WHERE id_board = \(boardId) AND owner = \(type.rawValue) " +
 			"AND ((x = 0 AND y = 0)" +
 			"OR (x = 0 AND y = 1)" +
-		"OR (x = 0 AND y = 2))"
+            "OR (x = 0 AND y = 2))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -712,7 +713,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM slots WHERE id_board = \(boardId) AND owner = \(type.rawValue) " +
 			"AND ((x = 1 AND y = 0)" +
 			"OR (x = 1 AND y = 1)" +
-		"OR (x = 1 AND y = 2))"
+            "OR (x = 1 AND y = 2))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -726,7 +727,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM slots WHERE id_board = \(boardId) AND owner = \(type.rawValue) " +
 			"AND ((x = 2 AND y = 0)" +
 			"OR (x = 2 AND y = 1)" +
-		"OR (x = 2 AND y = 2))"
+            "OR (x = 2 AND y = 2))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -740,7 +741,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM slots WHERE id_board = \(boardId) AND owner = \(type.rawValue) " +
 			"AND ((x = 0 AND y = 0)" +
 			"OR (x = 1 AND y = 1)" +
-		"OR (x = 2 AND y = 2))"
+            "OR (x = 2 AND y = 2))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -754,7 +755,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM slots WHERE id_board = \(boardId) AND owner = \(type.rawValue) " +
 			"AND ((x = 2 AND y = 0)" +
 			"OR (x = 1 AND y = 1)" +
-		"OR (x = 0 AND y = 2))"
+            "OR (x = 0 AND y = 2))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -796,7 +797,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM boards WHERE id_field = \(fieldId) AND owner = \(type.rawValue) " +
 			"AND ((x = 0 AND y = 0)" +
 			"OR (x = 1 AND y = 0)" +
-		"OR (x = 2 AND y = 0))"
+            "OR (x = 2 AND y = 0))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -809,8 +810,8 @@ struct GameStateServer: GameState {
 		// (id INTEGER PRIMARY KEY, id_board INTEGER, x INTEGER, y, INTEGER, owner INTEGER)
 		let stat = "SELECT count(id) FROM boards WHERE id_field = \(fieldId) AND owner = \(type.rawValue) " +
 			"AND ((x = 0 AND y = 1)" +
-			"OR (x = 1 AND y = 1)" +
-		"OR (x = 2 AND y = 1))"
+            "OR (x = 1 AND y = 1)" +
+            "OR (x = 2 AND y = 1))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -824,7 +825,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM boards WHERE id_field = \(fieldId) AND owner = \(type.rawValue) " +
 			"AND ((x = 0 AND y = 2)" +
 			"OR (x = 1 AND y = 2)" +
-		"OR (x = 2 AND y = 2))"
+            "OR (x = 2 AND y = 2))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -838,7 +839,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM boards WHERE id_field = \(fieldId) AND owner = \(type.rawValue) " +
 			"AND ((x = 0 AND y = 0)" +
 			"OR (x = 0 AND y = 1)" +
-		"OR (x = 0 AND y = 2))"
+            "OR (x = 0 AND y = 2))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -852,7 +853,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM boards WHERE id_field = \(fieldId) AND owner = \(type.rawValue) " +
 			"AND ((x = 1 AND y = 0)" +
 			"OR (x = 1 AND y = 1)" +
-		"OR (x = 1 AND y = 2))"
+            "OR (x = 1 AND y = 2))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -866,7 +867,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM boards WHERE id_field = \(fieldId) AND owner = \(type.rawValue) " +
 			"AND ((x = 2 AND y = 0)" +
 			"OR (x = 2 AND y = 1)" +
-		"OR (x = 2 AND y = 2))"
+            "OR (x = 2 AND y = 2))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -880,7 +881,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM boards WHERE id_field = \(fieldId) AND owner = \(type.rawValue) " +
 			"AND ((x = 0 AND y = 0)" +
 			"OR (x = 1 AND y = 1)" +
-		"OR (x = 2 AND y = 2))"
+            "OR (x = 2 AND y = 2))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -894,7 +895,7 @@ struct GameStateServer: GameState {
 		let stat = "SELECT count(id) FROM boards WHERE id_field = \(fieldId) AND owner = \(type.rawValue) " +
 			"AND ((x = 2 AND y = 0)" +
 			"OR (x = 1 AND y = 1)" +
-		"OR (x = 0 AND y = 2))"
+            "OR (x = 0 AND y = 2))"
 		var yes = false
 		try! sqlite.forEachRow(statement: stat) {
 			(stmt:SQLiteStmt, _:Int) -> () in
@@ -1044,13 +1045,3 @@ struct GameStateServer: GameState {
 		response(AsyncResponse.successString("\(activeInfo.0) \(activeInfo.1.serialize())"))
 	}
 }
-
-
-
-
-
-
-
-
-
-
