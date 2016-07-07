@@ -7,11 +7,12 @@
 //
 
 import PerfectLib
+import PerfectHTTP
 import UNCShared
 
-extension WebResponse {
+extension HTTPResponse {
 	func badRequest(msg: String) {
-		self.setStatus(code: 400, message: "Bad Request")
+		self.status = .badRequest
         self.appendBody(string: msg)
 	}
 	
@@ -20,14 +21,16 @@ extension WebResponse {
 			return self.request.playerId
 		}
 		set {
-			let expiresIn = newValue == nil ? -500.0 : 2000000000.0
-			let cookie = Cookie(name: playerIdCookieName, value: String(newValue), domain: nil, expires: nil, expiresIn: expiresIn, path: "/", secure: false, httpOnly: false)
+			let expiresIn = newValue == nil ? -500 : 2000000000
+			let cookie = HTTPCookie(name: playerIdCookieName, value: String(newValue),
+			                        domain: nil, expires: .relativeSeconds(expiresIn),
+			                        path: "/", secure: false, httpOnly: false)
 			self.addCookie(cookie)
 		}
 	}
 }
 
-extension WebRequest {
+extension HTTPRequest {
 	var playerId: Int? {
 		for (name, value) in self.cookies {
 			if name == playerIdCookieName {

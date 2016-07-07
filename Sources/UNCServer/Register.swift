@@ -8,6 +8,7 @@
 
 import PerfectThread
 import PerfectLib
+import PerfectHTTP
 import UNCShared
 
 var waitingPlayerId = invalidId
@@ -41,14 +42,14 @@ public func PerfectServerModuleInit() {
 	Routing.Routes[EndPoint.GetPlayerNick.rawValue] = getPlayerNickHandler
 }
 
-func registerNickHandler(request: WebRequest, _ response: WebResponse) {
+func registerNickHandler(request: HTTPRequest, _ response: HTTPResponse) {
 	
 	print("registerNickHandler")
 	
-	response.replaceHeader(name: "Content-Type", value: "text/plain")
+	response.setHeader(.contentType, value: "text/plain")
 	
 	defer {
-		response.requestCompleted()
+		response.completed()
 	}
 	
 	guard let nick = request.urlVariables["nick"] else {
@@ -65,14 +66,14 @@ func registerNickHandler(request: WebRequest, _ response: WebResponse) {
     response.appendBody(string: "\(playerId)")
 }
 
-func getActiveGameHandler(request: WebRequest, _ response: WebResponse) {
+func getActiveGameHandler(request: HTTPRequest, _ response: HTTPResponse) {
 	
 	print("getActiveGameHandler")
 	
-	response.replaceHeader(name: "Content-Type", value: "text/plain")
+	response.setHeader(.contentType, value: "text/plain")
 	
 	defer {
-		response.requestCompleted()
+		response.completed()
 	}
 	
 	guard let playerId = request.playerId else {
@@ -85,14 +86,14 @@ func getActiveGameHandler(request: WebRequest, _ response: WebResponse) {
     response.appendBody(string: "\(gameId) \(piece.rawValue)")
 }
 
-func startGameHandler(request: WebRequest, _ response: WebResponse) {
+func startGameHandler(request: HTTPRequest, _ response: HTTPResponse) {
 	
 	print("startGameHandler")
 	
-	response.replaceHeader(name: "Content-Type", value: "text/plain")
+	response.setHeader(.contentType, value: "text/plain")
 	
 	defer {
-		response.requestCompleted()
+		response.completed()
 	}
 	
 	guard let playerId = request.playerId else {
@@ -126,14 +127,14 @@ func startGameHandler(request: WebRequest, _ response: WebResponse) {
     response.appendBody(string: "\(gameId)")
 }
 
-func concedeGameHandler(request: WebRequest, _ response: WebResponse) {
+func concedeGameHandler(request: HTTPRequest, _ response: HTTPResponse) {
 	
 	print("concedeGameHandler")
 	
-	response.replaceHeader(name: "Content-Type", value: "text/plain")
+	response.setHeader(.contentType, value: "text/plain")
 	
 	defer {
-		response.requestCompleted()
+		response.completed()
 	}
 	
 	guard let playerId = request.playerId else {
@@ -164,15 +165,15 @@ func concedeGameHandler(request: WebRequest, _ response: WebResponse) {
 	}
 }
 
-func getGameStatusHandler(request: WebRequest, _ response: WebResponse) {
+func getGameStatusHandler(request: HTTPRequest, _ response: HTTPResponse) {
 	
 	print("getGameStatusHandler")
 	
-	response.replaceHeader(name: "Content-Type", value: "text/plain")
+	response.setHeader(.contentType, value: "text/plain")
 	
 	guard let playerId = request.playerId else {
 		response.badRequest(msg: "Could not get active player id")
-		return response.requestCompleted()
+		return response.completed()
 	}
 	
 	let gameState = GameStateServer()
@@ -184,19 +185,19 @@ func getGameStatusHandler(request: WebRequest, _ response: WebResponse) {
 		} else {
 			response.badRequest(msg: "Could not get game state")
 		}
-		response.requestCompleted()
+		response.completed()
 	}
 }
 
-func makeMoveHandler(request: WebRequest, _ response: WebResponse) {
+func makeMoveHandler(request: HTTPRequest, _ response: HTTPResponse) {
 	
 	print("makeMoveHandler")
 	
-	response.replaceHeader(name: "Content-Type", value: "text/plain")
+	response.setHeader(.contentType, value: "text/plain")
 	
 	guard let playerId = request.playerId else {
 		response.badRequest(msg: "Could not get active player id")
-		return response.requestCompleted()
+		return response.completed()
 	}
 	
 	guard let bx = request.urlVariables["bx"],
@@ -204,7 +205,7 @@ func makeMoveHandler(request: WebRequest, _ response: WebResponse) {
 			x = request.urlVariables["x"],
 			y = request.urlVariables["y"] else {
 		response.badRequest(msg: "Moves require board x, y and slot x, y")
-		return response.requestCompleted()
+		return response.completed()
 	}
 	
 	guard let bxInt = Int(bx),
@@ -212,7 +213,7 @@ func makeMoveHandler(request: WebRequest, _ response: WebResponse) {
 			xInt = Int(x),
 			yInt = Int(y) else {
 		response.badRequest(msg: "Invalid value for board or slot")
-		return response.requestCompleted()
+		return response.completed()
 	}
 	
 	let gameState = GameStateServer()
@@ -224,19 +225,19 @@ func makeMoveHandler(request: WebRequest, _ response: WebResponse) {
 		} else {
 			response.badRequest(msg: "Could not get game state")
 		}
-		response.requestCompleted()
+		response.completed()
 	}
 }
 
-func getPlayerNickHandler(request: WebRequest, _ response: WebResponse) {
+func getPlayerNickHandler(request: HTTPRequest, _ response: HTTPResponse) {
 	
 	print("getPlayerNickHandler")
 	
-	response.replaceHeader(name: "Content-Type", value: "text/plain")
+	response.setHeader(.contentType, value: "text/plain")
 	
 	guard let playerId = request.urlVariables["playerid"], playerIdInt = Int(playerId) else {
 		response.badRequest(msg: "Player id not provided")
-		return response.requestCompleted()
+		return response.completed()
 	}
 	
 	let gameState = GameStateServer()
@@ -248,7 +249,7 @@ func getPlayerNickHandler(request: WebRequest, _ response: WebResponse) {
 		} else {
 			response.badRequest(msg: "Could not get player nick")
 		}
-		response.requestCompleted()
+		response.completed()
 	}
 	
 }
