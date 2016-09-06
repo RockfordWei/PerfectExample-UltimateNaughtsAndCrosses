@@ -101,8 +101,8 @@ func startGameHandler(request: HTTPRequest, _ response: HTTPResponse) {
 	}
 	
 	guard let rawType = request.urlVariables["playertype"],
-			rawInt = Int(rawType),
-			playerType = PlayerType(rawValue: rawInt) else {
+			let rawInt = Int(rawType),
+			let playerType = PlayerType(rawValue: rawInt) else {
 		return response.badRequest(msg: "Valid player type not provided")
 	}
 	let gameState = GameStateServer()
@@ -201,17 +201,17 @@ func makeMoveHandler(request: HTTPRequest, _ response: HTTPResponse) {
 	}
 	
 	guard let bx = request.urlVariables["bx"],
-			by = request.urlVariables["by"],
-			x = request.urlVariables["x"],
-			y = request.urlVariables["y"] else {
+			let by = request.urlVariables["by"],
+			let x = request.urlVariables["x"],
+			let y = request.urlVariables["y"] else {
 		response.badRequest(msg: "Moves require board x, y and slot x, y")
 		return response.completed()
 	}
 	
 	guard let bxInt = Int(bx),
-			byInt = Int(by),
-			xInt = Int(x),
-			yInt = Int(y) else {
+			let byInt = Int(by),
+			let xInt = Int(x),
+			let yInt = Int(y) else {
 		response.badRequest(msg: "Invalid value for board or slot")
 		return response.completed()
 	}
@@ -235,7 +235,7 @@ func getPlayerNickHandler(request: HTTPRequest, _ response: HTTPResponse) {
 	
 	response.setHeader(.contentType, value: "text/plain")
 	
-	guard let playerId = request.urlVariables["playerid"], playerIdInt = Int(playerId) else {
+	guard let playerId = request.urlVariables["playerid"], let playerIdInt = Int(playerId) else {
 		response.badRequest(msg: "Player id not provided")
 		return response.completed()
 	}

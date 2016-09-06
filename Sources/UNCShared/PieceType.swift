@@ -13,9 +13,9 @@ public enum PieceType: Int, CustomStringConvertible {
 		switch self {
 		case .none:
 			return "_"
-		case .ex, exWin:
+		case .ex, .exWin:
 			return "X"
-		case .oh, ohWin:
+		case .oh, .ohWin:
 			return "O"
 		case .draw:
 			return "-"

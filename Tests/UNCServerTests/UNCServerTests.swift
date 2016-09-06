@@ -2,7 +2,7 @@ import XCTest
 import UNCShared
 @testable import UNCServer
 
-class PerfectUltimateNaughtsAndCrossesTests: XCTestCase {
+class UNCServerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
@@ -320,15 +320,15 @@ class PerfectUltimateNaughtsAndCrossesTests: XCTestCase {
         let boardId = gs.getBoardId(gameId: gameId, index: (0, 0))
         do {
             let slotId = gs.getSlotId(boardId: boardId, index: (0, 0))
-            gs.setSlotOwner(slotId: slotId, type: .ex)
+            _ = gs.setSlotOwner(slotId: slotId, type: .ex)
         }
         do {
             let slotId = gs.getSlotId(boardId: boardId, index: (2, 2))
-            gs.setSlotOwner(slotId: slotId, type: .ex)
+            _ = gs.setSlotOwner(slotId: slotId, type: .ex)
         }
         do {
             let slotId = gs.getSlotId(boardId: boardId, index: (2, 0))
-            gs.setSlotOwner(slotId: slotId, type: .oh)
+            _ = gs.setSlotOwner(slotId: slotId, type: .oh)
         }
         
         let board = gs.getBoard(gameId: gameId, index: (0, 0))!
@@ -369,15 +369,15 @@ class PerfectUltimateNaughtsAndCrossesTests: XCTestCase {
         let boardId = gs.getBoardId(gameId: gameId, index: (1, 1))
         do {
             let slotId = gs.getSlotId(boardId: boardId, index: (0, 0))
-            gs.setSlotOwner(slotId: slotId, type: .ex)
+            _ = gs.setSlotOwner(slotId: slotId, type: .ex)
         }
         do {
             let slotId = gs.getSlotId(boardId: boardId, index: (2, 2))
-            gs.setSlotOwner(slotId: slotId, type: .ex)
+            _ = gs.setSlotOwner(slotId: slotId, type: .ex)
         }
         do {
             let slotId = gs.getSlotId(boardId: boardId, index: (2, 0))
-            gs.setSlotOwner(slotId: slotId, type: .oh)
+            _ = gs.setSlotOwner(slotId: slotId, type: .oh)
         }
         
         let field = gs.getField(gameId: gameId)!
@@ -679,7 +679,7 @@ class PerfectUltimateNaughtsAndCrossesTests: XCTestCase {
         print("winner: \(winner)")
     }
 
-    static var allTests : [(String, (PerfectUltimateNaughtsAndCrossesTests) -> () throws -> Void)] {
+    static var allTests : [(String, (UNCServerTests) -> () throws -> Void)] {
         return [
             ("testCreatePlayer", testCreatePlayer),
             ("testCreatePlayerFail", testCreatePlayerFail),

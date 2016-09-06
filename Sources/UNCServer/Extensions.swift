@@ -22,7 +22,7 @@ extension HTTPResponse {
 		}
 		set {
 			let expiresIn = newValue == nil ? -500 : 2000000000
-			let cookie = HTTPCookie(name: playerIdCookieName, value: String(newValue),
+			let cookie = HTTPCookie(name: playerIdCookieName, value: String(newValue ?? 0),
 			                        domain: nil, expires: .relativeSeconds(expiresIn),
 			                        path: "/", secure: false, httpOnly: false)
 			self.addCookie(cookie)

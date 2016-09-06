@@ -68,7 +68,7 @@ public enum UltimateState {
 	}
 	
 	static func deserialize(source: String) -> UltimateState? {
-		if let id = Int(String(source[source.startIndex])), stateId = UltimateStateId(rawValue: id) {
+		if let id = Int(String(source[source.startIndex])), let stateId = UltimateStateId(rawValue: id) {
 			switch stateId {
 			case .noneId:
 				return .none
@@ -76,7 +76,7 @@ public enum UltimateState {
 				return .waiting
 			case .gameOverId:
 				if let pieceTypeInt = Int(String(source[source.index(after: source.startIndex)])),
-					pieceType = PieceType(rawValue: pieceTypeInt) {
+					let pieceType = PieceType(rawValue: pieceTypeInt) {
 					
 					let fieldString = source[source.index(source.startIndex, offsetBy: 2)..<source.endIndex]
 					if let field = Field.deserialize(source: fieldString) {
@@ -85,7 +85,7 @@ public enum UltimateState {
 				}
 			case .inPlayId:
 				if let pieceTypeInt = Int(String(source[source.index(after: source.startIndex)])),
-					pieceType = PieceType(rawValue: pieceTypeInt) {
+					let pieceType = PieceType(rawValue: pieceTypeInt) {
 					
 					let c1 = String(source[source.index(source.startIndex, offsetBy: 2)])
 					let c2 = String(source[source.index(source.startIndex, offsetBy: 3)])
