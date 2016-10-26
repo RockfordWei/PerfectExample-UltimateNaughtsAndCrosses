@@ -1,4 +1,4 @@
-# Perfect-UltimateNaughtsAndCrosses
+# Perfect-UltimateNaughtsAndCrosses [简体中文](README.zh_CN.md)
 
 <p align="center">
     <a href="http://perfect.org/get-involved.html" target="_blank">
